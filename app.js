@@ -40,7 +40,7 @@ app.use((err, req, res, next) => {
   res.render('error',{ message: 'An error has occurred on the server', error : err});
 });
 
-
+/*
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
@@ -50,5 +50,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {error: res.locals.error});
 });
-
+*/
 module.exports = app;
