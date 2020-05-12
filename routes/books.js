@@ -10,8 +10,10 @@ function asyncHandler(cb){
     try {
       await cb(req, res, next)
     } catch(error){
-      console.log(error, "@@@@@@@@@@@@@@@@@@@@@@")
-      res.status(500).send(error);
+      // THIS GETS LOGGED
+      console.log(error, "asyncHandler")
+      // res.status(500).send(error);
+      res.status(500).send(error)
     }
   }
 }
@@ -66,18 +68,22 @@ router.post('/books/new', asyncHandler(async (req, res) => {
 
 /* SEND TO UPDATE BOOK FORM */
 
-router.get("/books/:id", asyncHandler(async (req, res) => {
+router.get("/books/:id", asyncHandler(async ( req, res, next) => {
   const book = await Book.findByPk(req.params.id);
   if(book) {
     res.render("update-book", {book, title: book.title });  
   } else {
-    res.sendStatus(404);
+    //res.render('page-not-found');
+    // trying to use next to forward the error
+    // to the global error handler.
+    next();
   }
-})); 
+}
+)); 
 
 /* UPDATE A BOOK */
 
-router.post("/books/:id", asyncHandler( async (req, res) => {
+router.post("/books/:id", asyncHandler( async (req, res,) => {
   let book; 
   try {
     book = await Book.findByPk(req.params.id)

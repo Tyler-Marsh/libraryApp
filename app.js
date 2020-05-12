@@ -27,28 +27,39 @@ routes.initialize(app);
 app.use('/', booksRouter);
 
 // catch 404 
+// call next to use the built in error handler
 
 app.use((req, res, next) => {
   console.log("404 handler called")
-  res.status(404).render('page-not-found')
+  next(createError(404));
 });
+
+
 
 // error handler
 app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  console.log("GLOBAL ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@")
-  res.render('error',{ message: 'An error has occurred on the server', error : err});
-});
-
-/*
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // set locals to be available to views
+  // only in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error', {error: res.locals.error});
+  // if status 404 render page not found view
+
+  /*
+
+THE ELSE CLAUSE WOULD NEVER GO THROUGH
+
+
+  */
+  if (err.status === 404) {
+    console.log("404")
+    res.render('page-not-found', { title: 'page-not-found'});
+  } else {
+    console.log("FOUND 500")
+    res.status(err.status || 500);
+    res.render('error');
+  }
 });
-*/
+
 module.exports = app;
