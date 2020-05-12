@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../models').Book;
+var createError = require('http-errors');
 
 
 /* Handler function to wrap each route. */
@@ -14,6 +15,7 @@ function asyncHandler(cb){
       console.log(error, "asyncHandler")
       // res.status(500).send(error);
       res.status(500).send(error)
+      next();
     }
   }
 }
@@ -22,6 +24,7 @@ function asyncHandler(cb){
 
 router.get('/', function (req, res, next) {
   res.redirect('/books');
+ 
 }); 
 /*
 
@@ -73,10 +76,10 @@ router.get("/books/:id", asyncHandler(async ( req, res, next) => {
   if(book) {
     res.render("update-book", {book, title: book.title });  
   } else {
-    //res.render('page-not-found');
-    // trying to use next to forward the error
-    // to the global error handler.
-    next();
+   // forward this error to the global error handler
+   // create 500 error bc server couldn't find the file to serve
+   // possibly because it doesn't exist
+    next(createError(500));
   }
 }
 )); 
@@ -91,7 +94,7 @@ router.post("/books/:id", asyncHandler( async (req, res,) => {
       await book.update(req.body);
       res.redirect("/books");
     } else {
-      res.sendStatus(404);
+      res.sendStatus(500);
     }
   }
   catch (error) {
