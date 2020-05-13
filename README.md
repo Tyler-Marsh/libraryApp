@@ -26,7 +26,7 @@ npm start
 
 * Sequelize ORM
 
-* form validatin with sequelize ORM
+* form validation with sequelize ORM
 
 * 404 route and global error handling with middelware
 
