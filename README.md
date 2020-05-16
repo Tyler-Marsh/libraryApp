@@ -7,7 +7,6 @@ CRUD application using express and sequelize to store and manage book informatio
 # Install
 npm install
 
-configure with sequelize CLI
 
 # Run
 npm start
