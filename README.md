@@ -5,11 +5,15 @@ CRUD application using express and sequelize to store and manage book informatio
 
 
 # Install
+```
 npm install
+```
 
 
 # Run
+```
 npm start
+```
 
 # App outline
 
